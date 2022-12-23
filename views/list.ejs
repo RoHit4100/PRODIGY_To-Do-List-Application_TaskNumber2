@@ -7,15 +7,24 @@
 </head>
 
 <body>
+    <div>
+        <h1>
+            <%= kindOfDay %>
+        </h1>
+    </div>
+    <div>
+        <form action="/" method="post">
+            <% for(var i=0; i < newTasks.length ; i++){ %>
+                <label class="task">
+                    <input type="checkbox">
+                    <%= newTasks[i] %>
+                </label>
+                <% } %>
 
-    <!-- <ul>
-            <li>Wake up in morning</li>
-            <li>study</li>
-            <li>Dinner</li>
-        </ul> -->
-    <h1>
-        Today is <%= kindOfDay %>
-    </h1>
+                    <input type="text" placeholder="Enter Your Next Task!" name="nextTask" autocomplete="off">
+                    <button type="submit">+</button>
+        </form>
+    </div>
 </body>
 
 </html>
