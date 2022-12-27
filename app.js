@@ -30,6 +30,13 @@ const item3 = new Item({
 })
 const defaultItems = [item1, item2, item3];
 
+const newListSchema = mongoose.Schema({
+    name: String,
+    defaultList: [itemSchema]
+});
+
+const List = new mongoose.model("List", newListSchema);
+
 app.get("/", function (req, res) {
     Item.find(function (err, items) {
         if (!err) {
@@ -47,10 +54,50 @@ app.get("/", function (req, res) {
     })
 });
 
+
+app.get("/:userDefineList", function (req, res) {
+    const newTitle = req.params.userDefineList;
+    List.findOne({ name: newTitle }, function (err, foundList) {
+        if (!err) {
+            if (!foundList) {
+                const list = new List({
+                    name: newTitle,
+                    defaultList: defaultItems
+                });
+                list.save();
+                res.redirect("/" + newTitle)
+            } else {
+                res.render("list.ejs", { heading: foundList.name, items: foundList.defaultList });
+            }
+        }
+    })
+    // console.log(list);
+})
+
+app.post("/", function (req, res) {
+    console.log(req.body);
+    const itemName = req.body.nextItem;
+    const listName = req.body.button;
+    const item = new Item({
+        name: itemName
+    });
+    if (listName === "Today") {
+        item.save();
+        res.redirect("/")
+    } else {
+        List.findOne({ name: listName }, function (err, foundItem) {
+            console.log(foundItem.defaultList);
+            foundItem.defaultList.push(item);
+            foundItem.save();
+            res.redirect("/" + listName);
+        })
+    }
+})
+
 app.post("/delete", function (req, res) {
-    let checkedId = (req.body.checkBox);
-    console.log(checkedId.trim());
+    let checkedId = req.body.checkBox;
     checkedId = checkedId.trim();
+    console.log(checkedId.trim());
     Item.findByIdAndRemove({ _id: checkedId }, function (err) {
         if (err) {
             console.log(err);
@@ -61,15 +108,6 @@ app.post("/delete", function (req, res) {
     res.redirect("/")
 })
 
-app.post("/", function (req, res) {
-    const itemName = req.body.nextItem;
-    const item = new Item({
-        name: itemName
-    });
-    item.save();
-    res.redirect("/")
-    // console.log(req.body);
-})
 
 app.listen(3000, function () {
     console.log("Server is running on port 3000\n");
