@@ -11,6 +11,14 @@ h1 {
     padding: 10px;
 }
 
+
+.task {
+    min-height: 50px;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #F1F1F1;
+}
+
 input[type="text"] {
     text-align: center;
     height: 50px;
@@ -54,7 +62,7 @@ p {
     color: #00204a;
 }
 
-form {
+form.task {
     text-align: center;
     margin: 5px 5px 0px;
     padding: 5px 15px 0 50px;
@@ -95,13 +103,6 @@ footer {
 
 #middle {
     padding: 5px;
-}
-
-.task {
-    min-height: 50px;
-    display: flex;
-    align-items: center;
-    border-bottom: 1px solid #F1F1F1;
 }
 
 

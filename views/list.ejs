@@ -6,18 +6,20 @@
         </h1>
     </div>
     <div class="box" id="middle">
-        <% for(var i=0; i < newTasks.length ; i++){ %>
-            <div class="task box">
-                <input type="checkbox">
-                <p>
-                    <%= newTasks[i] %>
-                </p>
-            </div>
-            <% } %>
+        <% items.forEach(item=> { %>
+            <form action="/delete" method="post">
+                <div class="task box">
+                    <input type="checkbox" onChange="this.form.submit()" name="checkBox" value="<%= item._id%> ">
+                    <p>
+                        <%= item.name %>
+                    </p>
+                </div>
+            </form>
+            <% }); %>
 
                 <form class="task" action="/" method="post">
-                    <input type="text" placeholder="Enter Your Next Task!" name="nextTask" autocomplete="off">
-                    <button type="submit" name="List" value=<%=heading %>>+</button>
+                    <input type="text" placeholder="Enter Your Next Task!" name="nextItem" autocomplete="off">
+                    <button type="submit" name="button" value=<%=heading %>>+</button>
                 </form>
 
                 <%- include("footer") %>
