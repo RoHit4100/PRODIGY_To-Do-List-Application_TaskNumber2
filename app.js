@@ -1,7 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
-
+const _ = require('lodash');
 const app = express();
 app.use(express.static("public"));
 
@@ -56,7 +56,7 @@ app.get("/", function (req, res) {
 
 
 app.get("/:userDefineList", function (req, res) {
-    const newTitle = req.params.userDefineList;
+    const newTitle = _.capitalize(req.params.userDefineList);
     List.findOne({ name: newTitle }, function (err, foundList) {
         if (!err) {
             if (!foundList) {
@@ -75,7 +75,6 @@ app.get("/:userDefineList", function (req, res) {
 })
 
 app.post("/", function (req, res) {
-    console.log(req.body);
     const itemName = req.body.nextItem;
     const listName = req.body.button;
     const item = new Item({
@@ -86,7 +85,6 @@ app.post("/", function (req, res) {
         res.redirect("/")
     } else {
         List.findOne({ name: listName }, function (err, foundItem) {
-            console.log(foundItem.defaultList);
             foundItem.defaultList.push(item);
             foundItem.save();
             res.redirect("/" + listName);
@@ -97,15 +95,26 @@ app.post("/", function (req, res) {
 app.post("/delete", function (req, res) {
     let checkedId = req.body.checkBox;
     checkedId = checkedId.trim();
-    console.log(checkedId.trim());
-    Item.findByIdAndRemove({ _id: checkedId }, function (err) {
-        if (err) {
-            console.log(err);
-        } else {
-            console.log("success");
-        }
-    })
-    res.redirect("/")
+    let listName = req.body.listName;
+    listName = listName.trim();
+    console.log(listName);
+    if (listName === "Today") {
+        Item.findByIdAndRemove({ _id: checkedId }, function (err) {
+            if (err) {
+                console.log(err);
+            } else {
+                console.log("success");
+                res.redirect("/")
+            }
+        })
+    } else {
+        List.findOneAndUpdate({ name: listName }, { $pull: { defaultList: { _id: checkedId } } }, function (err) {
+            if (!err) {
+                res.redirect("/" + listName);
+            }
+        })
+    }
+
 })
 
 
