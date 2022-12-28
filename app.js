@@ -12,7 +12,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 main().catch(err => console.log(err));
 async function main() {
     mongoose.set('strictQuery', true);
-    await mongoose.connect('mongodb://127.0.0.1:27017/todoDb');
+    await mongoose.connect('mongodb+srv://admin-rohit:rohit4934@cluster0.pzqkwyo.mongodb.net/todoDb');
 }
 
 const itemSchema = {
