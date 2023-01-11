@@ -7,7 +7,7 @@
 
 <h1>Functionality</h1>
 <ul>
-    <li>This Website is connected to the mongoDb atlas server and web services is hosted by the name.com</li>
+    <li>This Website is connected to the mongoDb atlas server and web services is hosted by the render.com</li>
     <li>This todo list can have as many custom list as user want!</li>
     <li>You can put the custom list name in the url of the website as an Parameter
         eg. <a href="https://rohit4100-to-do-list-webapp.onrender.com/work">
